@@ -31,7 +31,10 @@
 
 /* _____________ 你的代码 _____________ */
 
-type MyPick<T, K> = any
+type MyExtract<T, K> = T extends K ? T : never
+type MyPick<T, K extends keyof T> = {
+  [P in MyExtract<keyof T, K>]: T[P]
+}
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
