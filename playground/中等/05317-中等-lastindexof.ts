@@ -19,7 +19,11 @@
 
 /* _____________ 你的代码 _____________ */
 
-type LastIndexOf<T, U> = any
+type LastIndexOf<T, U> = T extends [...infer L, infer R]
+  ? Equal<R, U> extends true
+    ? L['length']
+    : LastIndexOf<L, U>
+  : -1
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

@@ -20,7 +20,19 @@
 
 /* _____________ 你的代码 _____________ */
 
-type Without<T, U> = any
+type MyIncludes<T extends unknown[], U> = T extends [infer L, ...infer R]
+  ? Equal<L, U> extends true
+    ? true
+    : MyIncludes<R, U>
+  : false
+
+type Without<T extends unknown[], U> = U extends unknown[]
+  ? T extends [infer L, ...infer R]
+    ? MyIncludes<U, L> extends true
+      ? Without<R, U>
+      : [L, ...Without<R, U>]
+    : []
+  : Without<T, [U]>
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

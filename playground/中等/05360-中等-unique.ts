@@ -20,7 +20,17 @@
 
 /* _____________ 你的代码 _____________ */
 
-type Unique<T> = any
+type MyIncludes<T, U> = T extends [infer L, ...infer R]
+  ? Equal<L, U> extends true
+    ? true
+    : MyIncludes<R, U>
+  : false
+
+type Unique<T extends unknown[], U extends unknown[] = []> = T extends [infer L, ...infer R]
+  ? MyIncludes<U, L> extends true 
+    ? Unique<R, U> 
+    : Unique<R, [...U, L]>
+  : U
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
