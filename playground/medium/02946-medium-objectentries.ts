@@ -23,7 +23,9 @@
 
 /* _____________ 你的代码 _____________ */
 
-type ObjectEntries<T> = any
+type ObjectEntries<T, K extends keyof T = keyof T> = K extends K
+  ? [K, T[K] extends undefined ? undefined : Required<T>[K]]
+  : never
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

@@ -19,7 +19,19 @@
 
 /* _____________ 你的代码 _____________ */
 
-type CheckRepeatedTuple<T extends unknown[]> = any
+type InArr<T, U extends any[] = []> = U extends [infer L, ...infer R]
+  ? T extends L
+    ? L extends T
+      ? true
+      : InArr<T, R>
+    : InArr<T, R>
+  : false
+
+type CheckRepeatedTuple<T extends unknown[], P extends any[] = []> = T extends [infer L, ...infer R]
+  ? InArr<L, [...P, ...R]> extends true
+    ? true
+    : InArr<R, [...P, L]>
+  : false
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

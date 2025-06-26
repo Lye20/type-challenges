@@ -16,8 +16,15 @@
 
 /* _____________ 你的代码 _____________ */
 
-type NumberRange<L, H> = any
+type NumberRange<L, H, C extends any[] = [], InRange = false, R = never> = C['length'] extends L
+  ? NumberRange<L, H, [...C, any], true, R | C['length']>
+  : C['length'] extends H
+    ? R | H
+    : InRange extends true
+      ? NumberRange<L, H, [...C, any], true, R | C['length']>
+      : NumberRange<L, H, [...C, any], false, R>
 
+type a = NumberRange<0, 140>
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 

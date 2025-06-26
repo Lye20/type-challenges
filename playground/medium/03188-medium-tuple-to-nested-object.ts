@@ -18,7 +18,9 @@
 
 /* _____________ 你的代码 _____________ */
 
-type TupleToNestedObject<T, U> = any
+type TupleToNestedObject<T extends PropertyKey[], U> = T extends [infer L extends PropertyKey, ...infer R extends PropertyKey[]]
+  ? { [P in L]: TupleToNestedObject<R, U> }
+  : U
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

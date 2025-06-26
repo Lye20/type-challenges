@@ -19,7 +19,11 @@
 
 /* _____________ 你的代码 _____________ */
 
-type MinusOne<T extends number> = any
+type MinusOne<T extends number, U extends any[] = []> = T extends [any, ...U]['length'] 
+  ? U['length'] 
+  : T extends [any, any, ...U]['length']
+  ? [any, ...U]['length']
+  : MinusOne<T, [...U, any, any]>
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

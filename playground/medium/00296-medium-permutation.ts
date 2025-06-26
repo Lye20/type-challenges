@@ -15,8 +15,9 @@
 */
 
 /* _____________ 你的代码 _____________ */
-
-type Permutation<T> = any
+type b = ['1', '2'] | ['3', '4'] | ['5', '6']
+type a = ['a', ...b]
+type Permutation<T, K = T> = [T] extends [never] ? [] : K extends K ? [K, ...Permutation<Exclude<T, K>>] : never
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

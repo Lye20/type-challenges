@@ -12,8 +12,15 @@
 
 /* _____________ 你的代码 _____________ */
 
-type FirstUniqueCharIndex<T extends string> = any
+type FirstUniqueCharIndex<T extends string, P extends string = '', U extends any[] = []> = T extends `${infer L}${infer R}`
+  ? R extends `${string}${L}${string}`
+    ? FirstUniqueCharIndex<R, `${P}${L}`, [...U, any]>
+    : P extends `${string}${L}${string}`
+      ? FirstUniqueCharIndex<R, `${P}${L}`, [...U, any]>
+      : U['length'] 
+  : -1
 
+  type a = `${string}a${string}` extends 'cab' ? true : false
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 

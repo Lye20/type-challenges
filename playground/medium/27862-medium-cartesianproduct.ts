@@ -16,7 +16,11 @@
 
 /* _____________ 你的代码 _____________ */
 
-type CartesianProduct<T, U> = any
+type CartesianProduct<T, U> = T extends T
+  ? U extends U
+    ? [T, U]
+    : never
+  : never
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

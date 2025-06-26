@@ -22,7 +22,15 @@
 
 /* _____________ 你的代码 _____________ */
 
-type MergeAll<XS> = any
+type MergeAll<XS, Res = {}> = XS extends [infer L, ...infer R]
+  ? MergeAll<R, {
+    [P in keyof Res]: P extends (keyof L) ? Res[P] | L[P] : Res[P]
+  } & {
+    [P in Exclude<keyof L, keyof Res>]: L[P]
+  }>
+  : {
+      [P in keyof Res]: Res[P]
+    }
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

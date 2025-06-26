@@ -18,7 +18,11 @@
 
 /* _____________ 你的代码 _____________ */
 
-type GetMiddleElement<T> = any
+type GetMiddleElement<T> = T extends [infer L, ...infer M, infer R]
+  ? M['length'] extends 0
+    ? [L, R]
+    : GetMiddleElement<M>
+  : T
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

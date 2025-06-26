@@ -18,8 +18,10 @@
 
 /* _____________ 你的代码 _____________ */
 
-type Combination<T extends string[]> = any
-
+type CombinationUnion<T extends string, U extends string = T> = T extends T
+  ? T | `${T} ${CombinationUnion<Exclude<U, T>>}`
+  : never
+type Combination<T extends string[]> = CombinationUnion<T[number]>
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 

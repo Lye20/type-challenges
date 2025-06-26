@@ -12,7 +12,11 @@
 
 /* _____________ 你的代码 _____________ */
 
-type Integer<T> = any
+type Integer<T extends number> = number extends T
+  ? never
+  : `${T}` extends `${infer I}.${infer R}`
+    ? I
+    : never
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

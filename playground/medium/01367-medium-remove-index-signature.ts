@@ -23,7 +23,15 @@
 
 /* _____________ 你的代码 _____________ */
 
-type RemoveIndexSignature<T> = any
+type RemoveIndexSignature<T extends object> = {
+    [P in keyof T as  string extends P
+        ? never
+        : number extends P
+        ? never
+        : symbol extends P
+        ? never
+        : P]: T[P];
+};
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

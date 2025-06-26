@@ -12,7 +12,9 @@
 
 /* _____________ 你的代码 _____________ */
 
-type Square<N extends number> = number
+type Square<N extends number> = `${N}` extends `-${infer Num}`
+  ? Square<Num>
+  : Square<N>
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

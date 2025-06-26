@@ -18,8 +18,16 @@
 
 /* _____________ 你的代码 _____________ */
 
-type IndexOf<T, U> = any
+type MyEqual<A, B> =
+  (<T>() => T extends A ? 1 : -1) extends
+  (<T>() => T extends B ? 1 : -1) ? true : false
 
+type IndexOf<T, U, IA extends any[] = []> = T extends [infer L, ...infer R]
+  ? MyEqual<L, U> extends true
+    ? IA['length']
+    : IndexOf<R, U, [...IA, any]>
+  : -1
+type a = IndexOf<[string, 1, number, 'a'], number>
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 

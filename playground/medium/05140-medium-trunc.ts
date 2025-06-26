@@ -18,8 +18,14 @@
 
 /* _____________ 你的代码 _____________ */
 
-type Trunc = any
-
+type Trunc<S extends number | string> = `${S}` extends `${infer I}${'.'}${any}`
+  ? I extends ''
+    ? '0'
+    : I extends '-'
+      ? '-0'
+      : I
+  : `${S}`
+type a = Trunc<'.3'>
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 

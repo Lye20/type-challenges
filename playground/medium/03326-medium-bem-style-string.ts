@@ -16,8 +16,15 @@
 
 /* _____________ 你的代码 _____________ */
 
-type BEM<B extends string, E extends string[], M extends string[]> = any
+type BEM<B extends string, E extends string[], M extends string[]> = E extends []
+  ? M extends [infer L extends string, ...infer R extends string[]]
+    ? R extends []
+      ? `${B}--${L}`
+      : `${B}--${L}` | BEM<B, E, R>
+    : B
+  : BEM<`${B}__${E[0]}`, [], M>
 
+type a = BEM<'btn', ['price'], ['warning', 'success']>
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 

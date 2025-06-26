@@ -25,8 +25,15 @@
 
 /* _____________ 你的代码 _____________ */
 
-type PermutationsOfTuple<T extends unknown[]> = any
+type PermutationsOfTupleUnion<T, U = T> = T
 
+// T extends T
+//   ? [T, ...PermutationsOfTupleUnion<Exclude<U, T>>]
+//   : never
+
+type PermutationsOfTuple<T extends unknown[]> = PermutationsOfTupleUnion<T[number]>
+
+type a = PermutationsOfTuple<[1, number, unknown]>
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect, ExpectFalse } from '@type-challenges/utils'
 

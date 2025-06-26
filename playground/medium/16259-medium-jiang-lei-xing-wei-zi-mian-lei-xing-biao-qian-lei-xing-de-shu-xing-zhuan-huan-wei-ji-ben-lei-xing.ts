@@ -33,7 +33,19 @@
 
 /* _____________ 你的代码 _____________ */
 
-type ToPrimitive = any
+type FindPrimitive<T, P extends any[] = [string, number, boolean]> = P extends [infer L, ...infer R]
+  ? T extends L
+    ? L
+    : FindPrimitive<T, R>
+  : never
+
+type ToPrimitive<T extends { [key: string]: any }> = {
+  [P in keyof T]: T[P] extends { [key: string]: any }
+    ? T[P] extends Function
+      ? Function
+      : ToPrimitive<T[P]>
+    : FindPrimitive<T[P]>
+}
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

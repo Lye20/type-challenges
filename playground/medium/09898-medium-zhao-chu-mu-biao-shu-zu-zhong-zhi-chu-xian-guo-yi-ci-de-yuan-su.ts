@@ -12,7 +12,19 @@
 
 /* _____________ 你的代码 _____________ */
 
-type FindEles<T extends any[]> = any
+type InArr<T, U extends any[]> = U extends [infer L, ...infer R]
+  ? L extends T
+    ? T extends L
+      ? true
+      : InArr<T, R>
+    : InArr<T, R>
+  : false
+
+type FindEles<T extends any[], P extends any[] = [], U extends any[] = []> = T extends [infer L, ...infer R]
+  ? InArr<L, [...R, ...P]> extends true
+    ? FindEles<R, [...P, L], U>
+    : FindEles<R, [...P, L], [...U, L]>
+  : U
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

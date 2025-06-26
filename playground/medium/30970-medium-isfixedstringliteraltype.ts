@@ -24,7 +24,27 @@
 
 /* _____________ 你的代码 _____________ */
 
-type IsFixedStringLiteralType<S extends string> = any
+type IsFixedNonNumericString<S> = S extends ''
+  ? true
+  : S extends `${infer C}${infer T}`
+    ? '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' extends C
+      ? false
+      : IsFixedNonNumericString<T>
+    : false
+
+type IsUnion<T, U = T> = [T] extends [never]
+  ? false
+  : T extends unknown
+    ? [U] extends [T]
+        ? false
+        : true
+    : never
+
+type IsFixedStringLiteralType<S extends string, T = S> = [S] extends [never]
+  ? false
+  : IsUnion<S> extends true
+    ? false
+    : IsFixedNonNumericString<S>
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

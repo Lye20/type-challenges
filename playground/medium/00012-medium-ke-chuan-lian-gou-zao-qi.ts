@@ -39,9 +39,13 @@
 
 /* _____________ 你的代码 _____________ */
 
-type Chainable = {
-  option(key: string, value: any): any
-  get(): any
+type Chainable<C = {}> = {
+  option<K extends PropertyKey, V>(key: K extends keyof C ? never : K, value: V): Chainable<{
+    [P in Exclude<keyof C, K>]: C[P]
+  } & {
+    [P in K]: V
+  }>
+  get(): C
 }
 
 /* _____________ 测试用例 _____________ */

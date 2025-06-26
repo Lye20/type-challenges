@@ -20,7 +20,13 @@
 
 /* _____________ 你的代码 _____________ */
 
-type IsTuple<T> = any
+type IsTuple<T> = [T] extends [never]
+  ? false
+  : T extends readonly unknown[]
+    ? number extends T['length']
+      ? false
+      : true
+    : false
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

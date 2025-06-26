@@ -12,7 +12,13 @@
 
 /* _____________ 你的代码 _____________ */
 
-type Triangular<N extends number> = any
+type GetArray<N extends number, R extends any[] = []> = R['length'] extends N
+  ? R
+  : GetArray<N, [...R, any]>
+
+type Triangular<N extends number, C extends any[] = [], U extends any[] = []> = C['length'] extends N
+  ? U['length']
+  : Triangular<N, [...C, any], [...U, ...GetArray<[...C, any]['length']>]>
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

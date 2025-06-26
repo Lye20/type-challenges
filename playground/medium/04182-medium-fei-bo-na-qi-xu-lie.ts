@@ -21,7 +21,9 @@
 
 /* _____________ 你的代码 _____________ */
 
-type Fibonacci<T extends number> = any
+type Fibonacci<T extends number, C extends any[] = [any], CA extends any[] = [any], LA extends any[] = []> = C['length'] extends T
+  ? CA['length']
+  : Fibonacci<T, [...C, any], [...CA, ...LA], CA>
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

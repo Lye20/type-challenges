@@ -27,7 +27,9 @@
 
 /* _____________ 你的代码 _____________ */
 
-type Diff<O, O1> = any
+type Diff<O, O1> = {
+  [P in Exclude<keyof O, keyof O1> | Exclude<keyof O1, keyof O>]: (O & O1)[P]
+}
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

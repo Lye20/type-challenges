@@ -18,7 +18,7 @@
 
 /* _____________ 你的代码 _____________ */
 
-type Transpose<M extends number[][]> = any
+type Transpose<M extends number[][], R extends number[][] = []> = 
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

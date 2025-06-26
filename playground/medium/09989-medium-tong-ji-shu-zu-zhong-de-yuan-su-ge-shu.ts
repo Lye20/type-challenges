@@ -18,24 +18,34 @@
     5: 1
   }
   */
-  type Simple3 = CountElementNumberToObject<[1,2,3,4,5,[1,2,3]]>
-  /*
-   return {
-    1: 2,
-    2: 2,
-    3: 2,
-    4: 1,
-    5: 1
-  }
-  */
-  ~~~
-
-  > 在 Github 上查看：https://tsch.js.org/9989/zh-CN
+type Simple3 = CountElementNumberToObject<[1, 2, 3, 4, 5, [1, 2, 3]]>
+/*
+ return {
+  1: 2,
+  2: 2,
+  3: 2,
+  4: 1,
+  5: 1
+}
+~~~
+> 在 Github 上查看：https://tsch.js.org/9989/zh-CN
 */
 
 /* _____________ 你的代码 _____________ */
 
-type CountElementNumberToObject<T> = any
+type CountElementNumberToObject<T, U extends { [key: string]: any[] } = {}> = T extends [infer L extends PropertyKey, ...infer R]
+  ? [L] extends [never]
+      ? CountElementNumberToObject<R, U>
+      : L extends keyof U
+        ? CountElementNumberToObject<R, { [P in keyof U]: P extends L ? [...U[P], any] : U[P] }>
+        : CountElementNumberToObject<R, U & { [P in L]: [any] }>
+  : T extends [infer A]
+    ? CountElementNumberToObject<A, U>
+    : GetObjCount<U>
+
+type GetObjCount<T> = {
+  [P in keyof T]: T[P] extends any[] ? T[P]['length'] : 0
+}
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
@@ -47,7 +57,7 @@ type cases = [
     3: 1
     4: 1
     5: 1
-  } >>,
+  }>>,
   Expect<Equal<CountElementNumberToObject<[1, 2, 3, 4, 5, [1, 2, 3]]>, {
     1: 2
     2: 2

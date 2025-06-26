@@ -23,7 +23,12 @@
 
 /* _____________ 你的代码 _____________ */
 
-declare function PromiseAll(values: any): any
+type Await<T> = T extends PromiseLike<infer U>
+  ? U extends PromiseLike<any>
+    ? Await<U>
+    : U
+  : T
+declare function PromiseAll<T extends any[]>(values: readonly [...T]): Promise<{ [K in keyof T]: Await<T[K]> }>
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

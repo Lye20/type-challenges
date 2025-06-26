@@ -15,8 +15,13 @@
 
 /* _____________ 你的代码 _____________ */
 
-type Hanoi<N extends number, From = 'A', To = 'B', Intermediate = 'C'> = any
+type SubOne<N, U extends any[] = []> = [...U, any]['length'] extends N
+  ? U['length']
+  : SubOne<N, [...U, any]>
 
+type Hanoi<N extends number, From = 'A', To = 'B', Intermediate = 'C'> = N extends 0
+  ? []
+  : [...Hanoi<SubOne<N>, From, Intermediate, To>, [From, To], ...Hanoi<SubOne<N>, Intermediate, To, From>]
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 

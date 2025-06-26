@@ -12,7 +12,8 @@
 
 /* _____________ 你的代码 _____________ */
 
-type IsOdd<T extends number> = any
+type IsOdd<T extends number, IA extends any[] = [], IO = false> = 
+ 
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

@@ -24,7 +24,10 @@
 
 /* _____________ 你的代码 _____________ */
 
-type KebabCase<S> = any
+type AddKebabLine<S, LastWord extends string = ''> = S extends `${infer L}${infer R}`
+  ? `${Lowercase<L> extends L ? L : LastWord extends '' ? L : `-${L}`}${AddKebabLine<R, L>}`
+  : S
+type KebabCase<S extends string> = Lowercase<AddKebabLine<S>>
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

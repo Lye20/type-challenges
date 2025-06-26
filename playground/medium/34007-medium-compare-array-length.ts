@@ -16,7 +16,13 @@
 
 /* _____________ 你的代码 _____________ */
 
-type CompareArrayLength<T extends any[], U extends any[]> = any
+type CompareArrayLength<T extends any[], U extends any[], V extends any[] = []> = V['length'] extends T['length']
+  ? V['length'] extends U['length']
+    ? 0
+    : -1
+  : V['length'] extends U['length']
+    ? 1
+    : CompareArrayLength<T, U, [...V, any]>
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

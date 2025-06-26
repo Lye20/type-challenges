@@ -12,7 +12,40 @@
 
 /* _____________ 你的代码 _____________ */
 
-type MyUppercase<T extends string> = any
+type CharMap = {
+  'a': 'A'
+  'b': 'B'
+  'c': 'C'
+  'd': 'D'
+  'e': 'E'
+  'f': 'F'
+  'g': 'G'
+  'h': 'H'
+  'i': 'I'
+  'j': 'J'
+  'k': 'K'
+  'l': 'L'
+  'm': 'M'
+  'n': 'N'
+  'o': 'O'
+  'p': 'P'
+  'q': 'Q'
+  'r': 'R'
+  's': 'S'
+  't': 'T'
+  'u': 'U'
+  'v': 'V'
+  'w': 'W'
+  'x': 'X'
+  'y': 'Y'
+  'z': 'Z'
+}
+
+type MyUppercase<T extends string> = T extends `${infer L}${infer R}`
+  ? L extends keyof CharMap
+    ? `${CharMap[L]}${MyUppercase<R>}`
+    : `${L}${MyUppercase<R>}`
+  : ''
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

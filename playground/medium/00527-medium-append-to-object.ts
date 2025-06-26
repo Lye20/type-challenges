@@ -19,8 +19,10 @@
 
 /* _____________ 你的代码 _____________ */
 
-type AppendToObject<T, U, V> = any
-
+type AppendToObject<T, U extends PropertyKey, V> = {
+  [P in (keyof T) | U]: P extends keyof T ? T[P] : V
+}
+type b = AppendToObject<test1, 'home', boolean>
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 

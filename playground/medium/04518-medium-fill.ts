@@ -19,13 +19,35 @@
 
 /* _____________ 你的代码 _____________ */
 
+type GreaterOrEqual<T, U, A extends any[] = []> = A['length'] extends U
+  ? true
+  : A['length'] extends T
+    ? A['length'] extends U
+      ? true
+      : false
+    : GreaterOrEqual<T, U, [...A, any]>
+
 type Fill<
   T extends unknown[],
   N,
   Start extends number = 0,
   End extends number = T['length'],
-> = any
+  CurIndexArr extends number[] = [],
+  IsFilling extends boolean = false,
+> = GreaterOrEqual<Start, End> extends true
+  ? T
+  : T extends [infer L, ...infer R]
+    ? CurIndexArr['length'] extends Start
+      ? [N, ...Fill<R, N, Start, End, [...CurIndexArr, any], true>]
+      : CurIndexArr['length'] extends End
+        ? T
+        : IsFilling extends true
+          ? [N, ...Fill<R, N, Start, End, [...CurIndexArr, any], true>]
+          : [L, ...Fill<R, N, Start, End, [...CurIndexArr, any], false>]
+    : []
 
+type a = Fill<[1, 2, 3], true, 10, 0>
+type b = Fill<[1, 2, 3], 0, 0, 0>
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 

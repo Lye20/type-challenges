@@ -18,7 +18,11 @@
 
 /* _____________ 你的代码 _____________ */
 
-type ParseUrlParams<T> = any
+type ParseUrlParams<T> = T extends `${any}:${infer R}`
+  ? R extends `${infer U}/${infer V}`
+    ? U | ParseUrlParams<V>
+    : R
+  : never
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

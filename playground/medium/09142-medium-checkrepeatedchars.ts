@@ -16,7 +16,11 @@
 
 /* _____________ 你的代码 _____________ */
 
-type CheckRepeatedChars<T extends string> = any
+type CheckRepeatedChars<T extends string, P extends string = ''> = T extends `${infer L}${infer R}`
+  ? P extends `${string}${L}${string}`
+    ? true
+    : CheckRepeatedChars<R, `${P}${L}`>
+  : false
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

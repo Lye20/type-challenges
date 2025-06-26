@@ -12,7 +12,9 @@
 
 /* _____________ 你的代码 _____________ */
 
-type PublicType<T extends object> = any
+type PublicType<T extends object> = {
+  [P in keyof T as P extends `_${string}` ? never : P]: T[P]
+}
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

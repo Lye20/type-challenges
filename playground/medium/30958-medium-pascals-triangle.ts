@@ -13,7 +13,23 @@
 
 /* _____________ 你的代码 _____________ */
 
-type Pascal<N extends number> = any
+type GetArr<N extends number, A extends any[] = []> = A['length'] extends N ? A : GetArr<N, [...A, any]>
+
+type Sum<A extends number, B extends number> = [...GetArr<A>, ...GetArr<B>]['length'] & number
+
+type GetNextPascal<CP extends number[], NP extends number[] = [], PreNum extends number = 0> = CP extends [infer L extends number, ...infer R extends number[]]
+  ? GetNextPascal<R, [...NP, Sum<PreNum, L>], L>
+  : [...NP, 1]
+
+type Pascal<
+  N extends number,
+  CA extends any[] = [],
+  PreP extends number[] = [],
+  CurP extends number[] = GetNextPascal<PreP>,
+  R extends number[][] = [],
+> = [...CA, any]['length'] extends N
+  ? [...R, CurP]
+  : Pascal<N, [...CA, any], CurP, GetNextPascal<CurP>, [...R, CurP]>
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

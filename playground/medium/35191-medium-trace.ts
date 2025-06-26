@@ -9,7 +9,6 @@
   However, it's difficult to calculate the sum with type system.
   To make things simple, let's return the elements on the main diagonal with union type.
 
-
   For example:
 
   ```ts
@@ -25,7 +24,9 @@
 
 /* _____________ 你的代码 _____________ */
 
-type Trace<T extends any[][]> = any
+type Trace<T extends any[][]> = T extends [infer L extends unknown[], ...infer R]
+  ? L['0'] | Trace<{ [P in keyof R]: R[P] extends [any, ...infer B] ? B : [] }>
+  : never
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

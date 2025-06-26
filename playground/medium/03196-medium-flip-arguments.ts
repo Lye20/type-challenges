@@ -21,7 +21,11 @@
 
 /* _____________ 你的代码 _____________ */
 
-type FlipArguments<T> = any
+type MyReverse<T extends readonly unknown[]> = T extends [...infer L, infer R] ? [R, ...MyReverse<L>] : []
+
+type FlipArguments<T extends (...args: never[]) => void> = T extends (...args: infer P) => infer R
+  ? (...args: MyReverse<P>) => R
+  : never
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

@@ -19,8 +19,17 @@
 
 /* _____________ 你的代码 _____________ */
 
-type AllCombinations<S> = any
+type StringToUnion<S extends string> = S extends `${infer L}${infer R}`
+  ? L | StringToUnion<R>
+  : never
 
+type AllCombinations<S extends string, O extends string = '', P = StringToUnion<S>, U = P> = S extends ''
+  ? ''
+  : P extends P & string
+    ? '' | `${O}${P}` | AllCombinations<S, `${O}${P}`, Exclude<U, P>>
+    : never
+
+type a = AllCombinations<'AB'>
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
 

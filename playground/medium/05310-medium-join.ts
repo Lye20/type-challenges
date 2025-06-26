@@ -19,7 +19,11 @@
 
 /* _____________ 你的代码 _____________ */
 
-type Join<T, U> = any
+type Join<T, U extends string | number = ',', V extends string = ''> = T extends [infer L extends string, ...infer R]
+  ? V extends ''
+    ? Join<R, U, L>
+    : Join<R, U, `${V}${U}${L}`>
+  : V
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

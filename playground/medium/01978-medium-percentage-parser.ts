@@ -30,7 +30,11 @@
 
 /* _____________ 你的代码 _____________ */
 
-type PercentageParser<A extends string> = any
+type PercentageParser<A extends string, Sign extends '+' | '-' | '' = '', Mark extends '%' | '' = ''> = A extends `${infer L extends '+' | '-'}${infer R}`
+  ? PercentageParser<R, L, Mark>
+  : A extends `${infer L}%`
+    ? PercentageParser<L, Sign, '%'>
+    : [Sign, A, Mark]
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

@@ -12,7 +12,19 @@
 
 /* _____________ 你的代码 _____________ */
 
-type FindAll<T extends string, P extends string> = any
+type GetStrLen<S extends string, LA extends any[] = []> = S extends `${any}${infer R}`
+  ? GetStrLen<R, [...LA, any]>
+  : LA['length']
+
+type FindAll<T extends string, P extends string, Prefix extends string = '', Res extends number[] = []> = P extends ''
+  ? []
+  : T extends `${Prefix}${infer L}${P}${any}`
+    ? P extends `${infer A}${any}`
+      ? FindAll<T, P, `${Prefix}${L}${A}`, [...Res, GetStrLen<`${Prefix}${L}`>]>
+      : never
+    : Res
+
+type a = FindAll<'AAAA', 'AA'>
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

@@ -25,7 +25,13 @@
 
 /* _____________ 你的代码 _____________ */
 
-type LongestCommonPrefix<T extends string[], P extends string = ''> = any
+type IsPrefix<SU, P extends string> = SU extends `${P}${any}` ? true : false
+
+type LongestCommonPrefix<T extends string[], P extends string = ''> = T[0] extends `${infer L}${any}`
+  ? IsPrefix<T[number], L> extends true
+    ? LongestCommonPrefix<{ [K in keyof T]: T[K] extends `${any}${infer B}` ? B : '' }, `${P}${L}`>
+    : P
+  : P
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

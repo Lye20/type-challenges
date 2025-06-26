@@ -18,7 +18,9 @@
 
 /* _____________ 你的代码 _____________ */
 
-type Shift<T> = any
+type Shift<T extends unknown[]> = T extends[] ? [] : T extends [infer L, ...infer R]
+  ? R
+  : never
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

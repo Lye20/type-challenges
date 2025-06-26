@@ -7,7 +7,6 @@
 
   ### Defined Partial Record
 
-
   Using a Record with union types as keys doesn't allow you to make an object with only some of them
 
   ```ts
@@ -37,7 +36,17 @@
 
 /* _____________ 你的代码 _____________ */
 
-type DefinedPartial<T> = any
+type DefinedKey<T extends string, P extends string = '', U extends string = T> = T extends T
+  ? `${P}${T}` | DefinedKey<Exclude<U, T>, `${P}${T}`>
+  : never
+type StringUnionToTuple<S, T extends string[] = []> = S extends S
+  ? S extends `${infer L}${infer R}`
+    ? StringUnionToTuple<R, [...T, L]>
+    : T
+  : never
+type DefinedPartial<T, U extends string[] = StringUnionToTuple<DefinedKey<keyof T & string>>> = U extends U
+  ? { [P in U[number]]: P extends keyof T ? T[P] : never }
+  : never
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect, ExpectTrue, NotAny, NotEqual } from '@type-challenges/utils'

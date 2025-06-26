@@ -23,7 +23,9 @@
 
 /* _____________ 你的代码 _____________ */
 
-type PickByType<T, U> = any
+type PickByType<T, U> = {
+  [P in keyof T as (T[P] extends U ? P : never)]: T[P]
+}
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'

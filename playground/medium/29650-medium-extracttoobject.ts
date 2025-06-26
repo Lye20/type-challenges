@@ -19,8 +19,14 @@
 */
 
 /* _____________ 你的代码 _____________ */
-
-type ExtractToObject<T, U> = any
+type CombineCrossObject<T> = {
+  [P in keyof T]: T[P]
+}
+type ExtractToObject<T, U extends keyof T> = CombineCrossObject<{
+  [P in keyof T as P extends U ? never : P]: T[P]
+} & {
+  [P in keyof T[U]]: T[U][P]
+}>
 
 /* _____________ 测试用例 _____________ */
 import type { Equal, Expect } from '@type-challenges/utils'
